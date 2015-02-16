@@ -13,20 +13,6 @@ describe PgMorph::Adapter do
     @adapter = ActiveRecord::Base.connection
     @comments_polymorphic = PgMorph::Polymorphic.new(:likes, :comments, column: :likeable)
     @posts_polymorphic = PgMorph::Polymorphic.new(:likes, :posts, column: :likeable)
-    begin
-      Like.destroy_all
-      Comment.destroy_all
-      @adapter.remove_polymorphic_foreign_key(:likes, :comments, column: :likeable)
-      @adapter.remove_polymorphic_foreign_key(:likes, :posts, column: :likeable)
-    rescue
-    end
-  end
-
-  after do
-    begin
-      @adapter.add_polymorphic_foreign_key(:likes, :comments, column: :likeable)
-    rescue
-    end
   end
 
   describe '#add_polymorphic_foreign_key' do
@@ -44,8 +30,8 @@ describe PgMorph::Adapter do
 
       @adapter.remove_polymorphic_foreign_key(:likes, :comments, column: :likeable)
 
-      -> { @adapter.run('SELECT id FROM likes_comments') }
-        .should raise_error ActiveRecord::StatementInvalid
+      expect { @adapter.run('SELECT id FROM likes_comments') }
+        .to raise_error ActiveRecord::StatementInvalid
     end
   end
 
@@ -72,8 +58,8 @@ describe PgMorph::Adapter do
       expect(Like.count).to eq(1)
       @adapter.remove_polymorphic_foreign_key(:likes, :comments, column: :likeable)
 
-      -> {  Like.create(likeable: comment) }
-        .should raise_error ActiveRecord::StatementInvalid
+      expect { Like.create(likeable: comment) }
+        .to raise_error ActiveRecord::StatementInvalid
 
       # if no partitions row inserted correctly
       like2.destroy
@@ -85,5 +71,4 @@ describe PgMorph::Adapter do
       expect(like4.id).to eq(Like.last.id)
     end
   end
-
 end

@@ -1,4 +1,6 @@
 spec/dummy/log
-spec/dummy/config/*.yml
+spec/dummy/config/database.yml
+spec/dummy/coverage
+coverage
 tags
 *.gem

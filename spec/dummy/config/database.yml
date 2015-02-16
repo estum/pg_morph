@@ -1,8 +1,0 @@
-test:
-  adapter: postgresql
-  encoding: unicode
-  database: pg_morph_test
-  pool: 5
-  username: postgres
-  password: test123
-  host: localhost
