@@ -1,6 +1,5 @@
 module PgMorph
   module Naming
-
     def type
       child_table.to_s.singularize.camelize
     end
@@ -32,6 +31,5 @@ module PgMorph
     def after_insert_trigger_name
       "#{parent_table}_after_insert_trigger"
     end
-
   end
 end

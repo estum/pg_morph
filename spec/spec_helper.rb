@@ -3,27 +3,27 @@ if ENV['CODECLIMATE_REPO_TOKEN']
   CodeClimate::TestReporter.start
 else
   require 'simplecov'
-  SimpleCov.start
+  SimpleCov.start do
+    add_filter 'spec/'
+    add_filter 'features/'
+    add_filter 'bundle/' # for Travis
+    add_filter '.gems/' # for Travis
+  end
 end
 
-# This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../spec/dummy/config/environment", __FILE__)
 
 require 'rspec/rails'
-# require 'rspec/autorun'
 require 'pry'
 
 require File.expand_path('../../lib/pg_morph', __FILE__)
 Dir[PgMorph::Engine.root.join('spec/support/**/*.rb', __FILE__)].each {|f| require f}
 
 
-# Checks for pending migrations before tests are run.
-# If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
-  # config.include FactoryGirl::Syntax::Methods
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!

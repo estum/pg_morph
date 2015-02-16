@@ -1,18 +1,16 @@
 module PgMorph
-
   module Adapter
-
     def add_polymorphic_foreign_key(parent_table, child_table, options = {})
       raise_unless_postgres
-
+      
       polymorphic = PgMorph::Polymorphic.new(parent_table, child_table, options)
-
+      
       sql = polymorphic.create_proxy_table_sql
       sql << polymorphic.create_before_insert_trigger_fun_sql
       sql << polymorphic.create_before_insert_trigger_sql
       sql << polymorphic.create_after_insert_trigger_fun_sql
       sql << polymorphic.create_after_insert_trigger_sql
-
+      
       execute(sql)
     end
 
@@ -27,13 +25,10 @@ module PgMorph
 
       execute(sql)
     end
-
+    
     private
-
     def raise_unless_postgres
       raise PgMorph::Exception.new("This functionality is supported only by PostgreSQL") unless self.is_a?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
     end
-
   end
-
 end

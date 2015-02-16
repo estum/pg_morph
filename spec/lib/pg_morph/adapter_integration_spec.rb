@@ -15,21 +15,7 @@ describe PgMorph::Adapter do
     @adapter = ActiveRecord::Base.connection
     @comments_polymorphic = PgMorph::Polymorphic.new(:likes, :comments, column: :likeable)
     @posts_polymorphic = PgMorph::Polymorphic.new(:likes, :posts, column: :likeable)
-    # begin
-    #   Like.destroy_all
-    #   Comment.destroy_all
-    #   @adapter.remove_polymorphic_foreign_key(:likes, :comments, column: :likeable)
-    #   @adapter.remove_polymorphic_foreign_key(:likes, :posts, column: :likeable)
-    # rescue
-    # end
   end
-
-  # after do
-  #   begin
-  #     @adapter.add_polymorphic_foreign_key(:likes, :comments, column: :likeable)
-  #   rescue
-  #   end
-  # end
 
   describe '#add_polymorphic_foreign_key' do
     it 'creates proxy table' do
